@@ -45,20 +45,20 @@ print_loading_bar() {
 }
 
 replace_gitconfig(){
-    echo "No se encontró un archivo de configuración en $gitconfig_path."
-    touch ~/.gitconfig
-    echo "Se ha creado un nuevo archivo de configuración en $gitconfig_path."
-    echo -e "\n"
-
     gitconfig_path=~/.gitconfig
+    branch_name=main
 
     if [ -f "$gitconfig_path" ]; then
-        echo "Se ha encontrado un archivo de configuración en $gitconfig_path."
+        echo "Se ha encontrado un archivo de configuración en $gitconfig_path"
     else
-        echo "No se encontró un archivo de configuración en $gitconfig_path."
+        echo "No se encontró un archivo de configuración en $gitconfig_path"
         touch ~/.gitconfig
-        echo "Se ha creado un nuevo archivo de configuración en $gitconfig_path."
+        echo "Se ha creado un nuevo archivo de configuración en $gitconfig_path"
     fi
+
+    echo "Estableciendo default branch como $branch_name"
+
+    git config --global init.defaultBranch $branch_name
 
     existing_username=$(git config --global user.name)
     existing_email=$(git config --global user.email)
@@ -72,11 +72,9 @@ replace_gitconfig(){
     fi
 
     read -p "Ingrese su nombre de usuario para Git: " new_username
-
+        git config --global user.name $new_username
     read -p "Ingrese su correo electrónico para Git: " new_email
-
-    sed -i "s/\(\[user\]\s*\n\s*name\s*=\s*\).*\$/\1$new_username/" ~/.gitconfig
-    sed -i "s/\(\[user\]\s*\n\s*email\s*=\s*\).*\$/\1$new_email/" ~/.gitconfig
+        git config --global user.email $new_email
 
     echo "Credenciales actualizadas con éxito."
 }
