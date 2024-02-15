@@ -19,13 +19,13 @@ echo -e "
  #     # #        #     #   # #   ## #    # #    #  
   #####  ######   #     #   # #    #  ####   ####   
 
- Version 0.1 BMS  
+BMS Version 0.1   
 " 
 }
 
 print_loading_bar() {
     local bar_length=50
-    local total_duration=$1/2
+    local total_duration=$1
     local update_interval=$(awk "BEGIN { print $total_duration / $bar_length }")
     
     for ((i = 0; i <= bar_length; i++)); do
@@ -78,3 +78,7 @@ replace_gitconfig(){
 
     echo "Credenciales actualizadas con éxito."
 }
+
+welcome
+print_loading_bar 1/2
+replace_gitconfig
