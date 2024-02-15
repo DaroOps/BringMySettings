@@ -70,15 +70,83 @@ replace_gitconfig(){
         echo "Correo electrónico: $existing_email"
         echo -e "\n"
     fi
+    read -p "¿Está seguro de que desea cambiar las credenciales? (y/n): " answer
 
-    read -p "Ingrese su nombre de usuario para Git: " new_username
-        git config --global user.name $new_username
-    read -p "Ingrese su correo electrónico para Git: " new_email
-        git config --global user.email $new_email
+    if [[ $answer =~ ^[Yy]$ ]]; then
+    
+        read -p "Ingrese su nombre de usuario para Git: " new_username
+            git config --global user.name $new_username
+        read -p "Ingrese su correo electrónico para Git: " new_email
+            git config --global user.email $new_email
+        echo -e "\n"
+        echo "Credenciales actualizadas con éxito."
+        echo -e "\n"
+    else
+        echo -e "\n"    
+        echo "Operación cancelada. No se cambiaron credenciales."
+        echo -e "\n"
+    fi
+}
 
-    echo "Credenciales actualizadas con éxito."
+vs_clear() {
+    code --list-extensions
+
+    echo -e "\n"
+    read -p "¿Está seguro de que desea desinstalar todas las extensiones de VSCode? (y/n): " answer
+
+    if [[ $answer =~ ^[Yy]$ ]]; then
+        if [ -z "$(code --list-extensions)" ]; then
+            echo "No se encontraron extensiones instaladas."
+        else
+            echo "Se encontraron extensiones instaladas. Desinstalando..."
+            echo -e "\n"
+            code --list-extensions | xargs -L 1 code --uninstall-extension
+        fi
+    else
+        echo "Operación cancelada. No se desinstalaron extensiones."
+    fi
+}
+
+ask_for_extension_profile() {
+    echo -e "\n"
+    echo "Seleccione un perfil de extensiones:"
+    echo "1. Perfil Python"
+    echo "2. Omitir"
+    echo -e "\n"
+    read -p "Ingrese el número del perfil deseado: " profile_choice
+
+    extensions=()
+
+    case $profile_choice in
+        1)
+            echo -e "\n"
+            echo "Cargando extensiones del Perfil Python..."
+            extensions=(
+                "mhutchie.git-graph"
+                "ms-python.python"
+                "formulahendry.code-runner"
+                "vivaxy.vscode-conventional-commits"
+            )
+            ;;
+        2)
+            echo -e "\n"
+            echo "Omitiendo la instalación de extensiones."
+            return
+            ;;
+        *)
+            echo -e "\n"
+            echo "Opción no válida. Finalizando el programa."
+            exit 1
+            ;;
+    esac
+
+    for extension in "${extensions[@]}"; do
+        code --install-extension "$extension" 
+    done
 }
 
 welcome
 print_loading_bar 1/2
 replace_gitconfig
+vs_clear
+ask_for_extension_profile
