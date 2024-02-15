@@ -75,7 +75,7 @@ replace_gitconfig(){
     if [[ $answer =~ ^[Yy]$ ]]; then
     
         read -p "Ingrese su nombre de usuario para Git: " new_username
-            git config --global user.name $new_username
+            git config --global user.name "$new_username"
         read -p "Ingrese su correo electrónico para Git: " new_email
             git config --global user.email $new_email
         echo -e "\n"
