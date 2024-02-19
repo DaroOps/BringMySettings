@@ -110,8 +110,9 @@ vs_clear() {
 ask_for_extension_profile() {
     echo -e "\n"
     echo "Seleccione un perfil de extensiones:"
+    echo "0. Omitir"
     echo "1. Perfil Python"
-    echo "2. Omitir"
+    echo "2. Perfil Web"
     echo -e "\n"
     read -p "Ingrese el número del perfil deseado: " profile_choice
 
@@ -129,6 +130,19 @@ ask_for_extension_profile() {
             )
             ;;
         2)
+            echo -e "\n"
+            echo "Cargando extensiones del Perfil Web..."
+            extensions=(
+                "mhutchie.git-graph"
+                "ms-vsliveshare.vsliveshare"
+                "pranaygp.vscode-css-peek"
+                "rangav.vscode-thunder-client"
+                "ritwickdey.LiveServer"
+                "vivaxy.vscode-conventional-commits"
+            )
+            ;;
+        0)
+        
             echo -e "\n"
             echo "Omitiendo la instalación de extensiones."
             return
