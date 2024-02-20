@@ -47,6 +47,8 @@ print_loading_bar() {
 replace_gitconfig(){
     gitconfig_path=~/.gitconfig
     branch_name=main
+    new_username=""
+    new_email=""
 
     if [ -f "$gitconfig_path" ]; then
         echo "Se ha encontrado un archivo de configuración en $gitconfig_path"
@@ -73,11 +75,19 @@ replace_gitconfig(){
     read -p "¿Está seguro de que desea cambiar las credenciales? (y/n): " answer
 
     if [[ $answer =~ ^[Yy]$ ]]; then
-    
-        read -p "Ingrese su nombre de usuario para Git: " new_username
-            git config --global user.name "$new_username"
-        read -p "Ingrese su correo electrónico para Git: " new_email
-            git config --global user.email $new_email
+
+        read -p "¿Quieres usar los datos por defecto? (y/n): " answer
+
+        if [[ $answer =~ ^[Yy]$ ]]; then
+
+            read -p "Ingrese su nombre de usuario para Git: " new_username
+                git config --global user.name "$new_username"
+            read -p "Ingrese su correo electrónico para Git: " new_email
+                git config --global user.email $new_email
+        fi
+        git config --global user.name "$new_username"
+        git config --global user.email $new_email
+        git config --global core.editor "code --wait"
         echo -e "\n"
         echo "Credenciales actualizadas con éxito."
         echo -e "\n"
