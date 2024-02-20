@@ -79,8 +79,8 @@ replace_gitconfig(){
         read -p "¿Quieres usar los datos por defecto? (y/n): " answer
 
         if [[ $answer =~ ^[Yy]$ ]]; then
-            new_username="ElJofator"
-            new_email="79776204+ElJofator@users.noreply.github.com"
+            new_username=""
+            new_email=""
         else
             read -p "Ingrese su nombre de usuario para Git: " new_username
                 git config --global user.name "$new_username"
